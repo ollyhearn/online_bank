@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound
 from .models import *
 
-menu = ['Main page', 'Sing_in', 'Registration']
+menu = [{'title': 'Main Page', 'url_name': 'home'},
+        {'title': 'Registration', 'url_name': 'registration'},
+        {'title': 'Sing_in', 'url_name': 'sing_in'},
+        ]
 
 
 def index(request):
@@ -15,19 +18,20 @@ def user_page(request, user_name):
 
 
 def registration(request):
-    return HttpResponse(request, 'bank/registration.html')
+    info = Users.objects.all()
+    return render(request, 'bank/registration.html', {'menu': menu, 'title': 'registration', 'info': info})
 
 
 def sing_in(request):
-    return HttpResponse(request, 'bank/sing_in.html')
+    return render(request, 'bank/sing_in.html')
 
 
 def transfer(request):
-    return HttpResponse(request, 'bank/transfer.html')
+    return render(request, 'bank/transfer.html')
 
 
 def bringing_in(request):
-    return HttpResponse(request, 'bank/bringing_in.html')
+    return render(request, 'bank/bringing_in.html')
 
 
 def page_not_found(request, exception):
