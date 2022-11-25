@@ -18,6 +18,11 @@
 										<b><li class="last"><a style="color:black" href="{% url m.url_name %}">{{m.title}}</a></li></b>
 								{% endif %}
 							{% endfor %}
+							{% if request.user.is_authenticated %}
+								<b><li>{{ user.username }}|<a style="color:black" href="{% url 'logout' %}">Exit</a></li></b>
+							{% else %}
+								<b><li><a style="color:black" href="{% url 'sing_in' %}">Sing in</a> </li></b>
+							{% endif %}
 
                         </div>
                     </nav>

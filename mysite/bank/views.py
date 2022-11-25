@@ -1,3 +1,4 @@
+from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
@@ -10,7 +11,7 @@ from .models import *
 
 menu = [{'title': 'Main Page', 'url_name': 'home'},
         {'title': 'Registration', 'url_name': 'registration'},
-        {'title': 'Sing_in', 'url_name': 'sing_in'},
+
         ]
 
 
@@ -35,8 +36,8 @@ def user_page(request):
 #     return render(request, 'bank/registration.html', {'form': form, 'menu': menu, 'title': 'registration'})
 
 
-def sing_in(request):
-    return render(request, 'bank/sing_in.html')
+# def sing_in(request):
+#     return render(request, 'bank/sing_in.html')
 
 
 def transfer(request):
@@ -55,8 +56,22 @@ class RegisterUser(CreateView):
     form_class = RegistrationUserForm
     template_name = 'bank/registration.html'
     success_url = reverse_lazy('user')
-    extra_context = {'menu': menu}
+    extra_context = {'menu': menu, 'title': 'Регистрация'}
 
-# class LoginUser(LoginView):
-#     form_class = AuthenticationForm
-#     template_name = 'bank/register.html'
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('user')
+
+class LoginUser(LoginView):
+    form_class = AuthenticationForm
+    template_name = 'bank/sing_in.html'
+    extra_context = {'menu': menu, 'title': 'Авторизация'}
+
+    def get_success_url(self):
+        return reverse_lazy('user')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('sing_in')
