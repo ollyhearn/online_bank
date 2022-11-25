@@ -2,14 +2,9 @@
 
 {% block content %}
 <h1>{{title}}</h1>
-{% for i in info %}
-
-        <li>{{i.card_number}}<br></li>
-        <li>{{i.mail}}<br></li>
-        <li>{{i.phone_number}}<br></li>
-        <li>{{i.password}}<br></li>
-        <li>{{i.FIO}}<br></li>
-        <li>{{i.amount_of_funds}}<br></li>
-
-    {% endfor %}
+<form action="{% url 'registration' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Регистрация</button>
+</form>
 {% endblock %}

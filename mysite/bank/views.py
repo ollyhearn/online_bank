@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
+
+from .forms import *
 from .models import *
 
 menu = [{'title': 'Main Page', 'url_name': 'home'},
@@ -13,13 +15,20 @@ def index(request):
     return render(request, 'bank/index.html', {'menu': menu, 'title': 'Main Page', 'info': info})
 
 
-def user_page(request, user_name):
-    return HttpResponse(f'user_page - {user_name}')
+def user_page(request):
+    info = Users.objects.all()
+    return render(request, 'bank/user_page.html', {'menu': menu, 'title': 'User_page', 'info': info})
 
 
 def registration(request):
-    info = Users.objects.all()
-    return render(request, 'bank/registration.html', {'menu': menu, 'title': 'registration', 'info': info})
+    if request.method == 'POST':
+        form = AddUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddUserForm()
+    return render(request, 'bank/registration.html', {'form': form, 'menu': menu, 'title': 'registration'})
 
 
 def sing_in(request):
