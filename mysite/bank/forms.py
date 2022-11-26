@@ -8,13 +8,17 @@ from .models import *
 class AddUserForm(forms.ModelForm):
     class Meta:
         model = Users
-        fields = ['FIO', 'phone_number', 'card_number', 'mail', 'password']
+        fields = ['FIO', 'phone_number', 'card_number', 'password']
+
+
+class BringingInForm(forms.ModelForm):
+
+    class Meta:
+        model = Users
+        fields = ['phone_number', 'password', 'amount_of_funds']
 
 
 class RegistrationUserForm(UserCreationForm):
-
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
-
-

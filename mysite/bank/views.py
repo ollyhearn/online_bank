@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.auth import logout, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
@@ -5,6 +7,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
+from django.db.models import F
 
 from .forms import *
 from .models import *
@@ -53,7 +56,22 @@ def transfer(request):
 
 
 def bringing_in(request):
-    return render(request, 'bank/bringing_in.html')
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number']
+        password = request.POST['password']
+        amount_of_funds = request.POST['amount_of_funds']
+        info = Users.objects.get(phone_number=phone_number, password=password)
+        a = int(amount_of_funds)
+        Users.objects.filter(phone_number=phone_number).update(amount_of_funds=F('amount_of_funds') + a)
+
+        info2 = Users.objects.filter(phone_number=phone_number, password=password)
+        print(info2)
+        if info:
+            return redirect('user')
+    else:
+        form = BringingInForm()
+    return render(request, 'bank/bringing_in.html',
+                  {'form': form, 'menu': menu, 'title': 'bringing_in'})
 
 
 def page_not_found(request, exception):
