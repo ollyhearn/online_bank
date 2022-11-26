@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from .forms import *
 from .models import *
@@ -20,20 +20,28 @@ def index(request):
     return render(request, 'bank/index.html', {'menu': menu, 'title': 'Main Page', 'info': info})
 
 
+# class UserPage(ListView):
+#     model = Users
+#     form_class = AddUserForm
+#     template_name = 'bank/user_page.html'
+#     extra_context = {'menu': menu, 'title': 'Страница пользователя'}
+
+
+# class LoginUser(LoginView):
+#     form_class = AuthenticationForm
+#     template_name = 'bank/sing_in.html'
+#     extra_context = {'menu': menu, 'title': 'Авторизация'}
+
+
 def user_page(request):
-    info = Users.objects.all()
-    return render(request, 'bank/user_page.html', {'menu': menu, 'title': 'User_page', 'info': info})
-
-
-# def registration(request):
-#     if request.method == 'POST':
-#         form = AddUserForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('home')
-#     else:
-#         form = AddUserForm()
-#     return render(request, 'bank/registration.html', {'form': form, 'menu': menu, 'title': 'registration'})
+    if request.method == 'POST':
+        form = AddUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = AddUserForm()
+    return render(request, 'bank/user_page.html', {'form': form, 'menu': menu, 'title': 'registration'})
 
 
 # def sing_in(request):
@@ -62,6 +70,7 @@ class RegisterUser(CreateView):
         user = form.save()
         login(self.request, user)
         return redirect('user')
+
 
 class LoginUser(LoginView):
     form_class = AuthenticationForm

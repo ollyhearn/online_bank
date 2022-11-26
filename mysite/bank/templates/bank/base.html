@@ -19,7 +19,7 @@
 								{% endif %}
 							{% endfor %}
 							{% if request.user.is_authenticated %}
-								<b><li>{{ user.username }}|<a style="color:black" href="{% url 'logout' %}">Exit</a></li></b>
+								<b><li><a style="color:black" href="{% url 'user' %}">{{ user.username }}    |    <a style="color:black" href="{% url 'logout' %}">Exit</a></li></b>
 							{% else %}
 								<b><li><a style="color:black" href="{% url 'sing_in' %}">Sing in</a> </li></b>
 							{% endif %}
