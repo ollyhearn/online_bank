@@ -62,7 +62,6 @@ def bringing_in(request):
         password = request.POST['password']
         amount_of_funds = request.POST['amount_of_funds']
         info = Users.objects.filter(phone_number=phone_number, password=password)
-        print(info)
         a = int(amount_of_funds)
         Users.objects.filter(phone_number=phone_number).update(amount_of_funds=F('amount_of_funds') + a)
 
@@ -79,8 +78,23 @@ def bringing_in(request):
 
 
 def about_card(request):
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number']
+        password = request.POST['password']
+        info = Users.objects.filter(phone_number=phone_number, password=password)
+        if info:
+            form = AboutCardForm()
+            messages.info(request, "Вот данные о карте")
+            return render(request, 'bank/about_card.html',
+                  {'form': form, 'menu': menu, 'title': 'about_card', 'info':info})
+        else:
+            messages.warning(request, "Пользователя с такими данными не сущестует")
+            return redirect('about_card')
 
-    return render(request, 'bank/about_card.html')
+    else:
+        form = AboutCardForm()
+    return render(request, 'bank/about_card.html',
+                  {'form': form, 'menu': menu, 'title': 'about_card'})
 
 
 def page_not_found(request, exception):

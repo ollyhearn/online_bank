@@ -9,4 +9,5 @@ urlpatterns = [
     path('transfer/', transfer, name='transfer'),
     path('bringing_in/', bringing_in, name='bringing_in'),
     path('logout/', logout_user, name='logout'),
+    path('about_card/', about_card, name='about_card'),
 ]

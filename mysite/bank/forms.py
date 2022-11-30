@@ -12,10 +12,15 @@ class AddUserForm(forms.ModelForm):
 
 
 class BringingInForm(forms.ModelForm):
-
     class Meta:
         model = Users
         fields = ['phone_number', 'password', 'amount_of_funds']
+
+
+class AboutCardForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = ['phone_number', 'password']
 
 
 class RegistrationUserForm(UserCreationForm):

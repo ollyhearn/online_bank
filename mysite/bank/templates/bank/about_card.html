@@ -1,0 +1,24 @@
+{% extends 'bank/base.html' %}
+
+{% block content %}
+<h1>Hello {{ user.username }} if you want to find out information about your card, enter next parameters</h1>
+
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить</button>
+</form>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+    {% for i in info %}
+    <h2>Номер карты <li>{{i.card_number}}<br></li></h2>
+       <h2> Телефонный номер <li>{{i.phone_number}}<br></li></h2>
+       <h2> ФИО <li>{{i.FIO}}<br></li></h2>
+      <h2>  Количество средств<li>{{i.amount_of_funds}}<br></li></h2>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}
