@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView
 from django.db.models import F
+from django.contrib import messages
 
 from .forms import *
 from .models import *
@@ -60,18 +61,26 @@ def bringing_in(request):
         phone_number = request.POST['phone_number']
         password = request.POST['password']
         amount_of_funds = request.POST['amount_of_funds']
-        info = Users.objects.get(phone_number=phone_number, password=password)
+        info = Users.objects.filter(phone_number=phone_number, password=password)
+        print(info)
         a = int(amount_of_funds)
         Users.objects.filter(phone_number=phone_number).update(amount_of_funds=F('amount_of_funds') + a)
 
-        info2 = Users.objects.filter(phone_number=phone_number, password=password)
-        print(info2)
         if info:
             return redirect('user')
+        else:
+            messages.warning(request, "Пользователя с такими данными не сущестует")
+            return redirect('bringing_in')
+
     else:
         form = BringingInForm()
     return render(request, 'bank/bringing_in.html',
                   {'form': form, 'menu': menu, 'title': 'bringing_in'})
+
+
+def about_card(request):
+
+    return render(request, 'bank/about_card.html')
 
 
 def page_not_found(request, exception):
