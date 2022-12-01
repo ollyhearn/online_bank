@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'bank/base.html' %}
 
-</body>
-</html>
+{% block content %}
+<h1>Hello {{ user.username }}</h1>
+<h3>If you don't have a map yet you can create one</h3>
+<form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Добавить</button>
+</form>
+<h3>If you have a card</h3>
+<h3>You can <a style="color:black" href="{% url 'bringing_in' %}"><b>bringing_in</b></a> and
+   <a style="color:black" href="{% url 'transfer' %}"><b>transfer</b></a><br><br>
+If you want to find out information about your card <a style="color:black" href="{% url 'about_card' %}"><b>about_card</b></a> </h3>
+{% endblock %}

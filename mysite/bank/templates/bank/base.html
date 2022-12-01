@@ -1,15 +1,42 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+	<link rel="stylesheet" href="{% static 'bank/css/styles.css' %}">
     <title>{{title}}</title>
 </head>
 <body>
+ <header class="header">
+            <div class="container">
+                    <nav class="nav">
+                        <div class="sub-title">
+							{% for m in menu %}
+								{% if not forloop.last %}
+										<b><li><a style="color:black" href="{% url m.url_name %}">{{m.title}}</a></li></b>
+								{% else %}
+										<b><li class="last"><a style="color:black" href="{% url m.url_name %}">{{m.title}}</a></li></b>
+								{% endif %}
+							{% endfor %}
+							{% if request.user.is_authenticated %}
+								<b><li><a style="color:black" href="{% url 'user' %}">{{ user.username }}    |    <a style="color:black" href="{% url 'logout' %}">Exit</a></li></b>
+							{% else %}
+								<b><li><a style="color:black" href="{% url 'sing_in' %}">Sing in</a> </li></b>
+							{% endif %}
+
+                        </div>
+                    </nav>
+                </div>
+            </div>
+    </header>
 {% block mainmenu %}
 <ul>
-    {% for m in menu %}
-    <li>{{m}}</li>
-    {% endfor %}
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+
 </ul>
 {% endblock mainmenu %}
 
