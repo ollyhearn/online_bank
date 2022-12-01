@@ -23,6 +23,14 @@ class AboutCardForm(forms.ModelForm):
         fields = ['phone_number', 'password']
 
 
+class TransferForm(forms.ModelForm):
+    recipients_phone_number = forms.IntegerField()
+
+    class Meta:
+        model = Users
+        fields = ['phone_number', 'password', 'amount_of_funds', 'recipients_phone_number']
+
+
 class RegistrationUserForm(UserCreationForm):
     class Meta:
         model = User
