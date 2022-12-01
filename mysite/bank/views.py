@@ -41,10 +41,14 @@ def transfer(request):
         password = request.POST['password']
         amount_of_funds = request.POST['amount_of_funds']
         recipients_phone_number = request.POST['recipients_phone_number']
+        a = int(amount_of_funds)
         info = Users.objects.filter(phone_number=phone_number, password=password)
         info_recipients = Users.objects.filter(phone_number=recipients_phone_number)
-        print(info_recipients)
-        a = int(amount_of_funds)
+        for i in info:
+            if i.amount_of_funds - a < 0:
+                messages.warning(request, "Недостаточно средств")
+                return redirect('transfer')
+
         Users.objects.filter(phone_number=phone_number).update(amount_of_funds=F('amount_of_funds') - a)
         Users.objects.filter(phone_number=recipients_phone_number).update(
             amount_of_funds=F('amount_of_funds') + a)
